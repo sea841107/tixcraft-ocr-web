@@ -54,9 +54,9 @@ function App() {
                     <li className="text-center list-group-item active" style={{ fontSize: "1.5rem" }}>Steps</li>
                     <li className="list-group-item active" style={{ fontSize: "1rem" }}>
                         1. Download the CAPTCHA images below.<br />
-                        <img src="https://i.ibb.co/pjjsL5PH/1742811006661.png" alt=""></img>&nbsp;
-                        <img src="https://i.ibb.co/NnnyGBzT/1742810855545-0.png" alt=""></img>&nbsp;
-                        <img src="https://i.ibb.co/cXQGdvtD/1741465416611-1.png" alt=""></img>
+                        <a href="https://drive.google.com/file/d/1ZFJOkzeGQmOEwkTwCtmRSMvrc8v_QPIE/view?usp=sharing" target="_blank" rel="noreferrer"><img src="https://i.ibb.co/pjjsL5PH/1742811006661.png" alt=""></img></a>&nbsp;
+                        <a href="https://drive.google.com/file/d/1eW5xS7AU-wZI-CGjfLIjqDGQ2Shvyt3r/view?usp=sharing" target="_blank" rel="noreferrer"><img src="https://i.ibb.co/NnnyGBzT/1742810855545-0.png" alt=""></img></a>&nbsp;
+                        <a href="https://drive.google.com/file/d/1UU2NdoiP-tImwY9SgFHOC2Ivl6Botu7F/view?usp=sharing" target="_blank" rel="noreferrer"><img src="https://i.ibb.co/cXQGdvtD/1741465416611-1.png" alt=""></img></a>
                         <br />
                         2. Or download it from <a href="https://tixcraft.com" target="_blank" rel="noopener noreferrer">Tixcraft</a>.<br />
                         3. Upload the CAPTCHA image.<br />
