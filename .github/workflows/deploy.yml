@@ -30,12 +30,12 @@ jobs:
 
       - name: Deploy to Azure Container Instances
         run: |
-          az container delete --name react-container --resource-group react-rg --yes || true
+          az container delete --name tixcraft-ocr-web-container --resource-group dd-tixcraft-ocr-web_group --yes || true
           az container create \
-            --resource-group react-rg \
-            --name react-container \
-            --image ${{ secrets.DOCKERHUB_USERNAME }}/react-app:${{ github.sha }} \
-            --dns-name-label react-app-ci-cd-demo \
+            --resource-group dd-tixcraft-ocr-web_group \
+            --name tixcraft-ocr-web-container \
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/tixcraft-ocr-web:${{ github.sha }} \
+            --dns-name-label tixcraft-ocr-web-ci-cd \
             --ports 80 \
             --location eastasia \
             --restart-policy Always
