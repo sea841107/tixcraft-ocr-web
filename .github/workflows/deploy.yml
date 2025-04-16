@@ -4,6 +4,12 @@ on:
   push:
     branches: [ test-ci ]
 
+env:
+  IMAGE_NAME: tixcraft-ocr-web
+  CONTAINER_NAME: tixcraft-ocr-web-container
+  RESOURCE_GROUP: dd-tixcraft-ocr-web_group
+  LOCATION: eastasia
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,22 +26,35 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tixcraft-ocr-web:${{ github.sha }} .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tixcraft-ocr-web:${{ github.sha }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Azure login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Ensure Microsoft.ContainerInstance is registered
+        run: |
+          az provider register --namespace Microsoft.ContainerInstance
+          echo "Waiting for registration to complete..."
+          for i in {1..10}; do
+            state=$(az provider show --namespace Microsoft.ContainerInstance --query "registrationState" -o tsv)
+            echo "Current state: $state"
+            if [ "$state" = "Registered" ]; then
+              break
+            fi
+            sleep 10
+          done
+
       - name: Deploy to Azure Container Instances
         run: |
-          az container delete --name tixcraft-ocr-web-container --resource-group dd-tixcraft-ocr-web_group --yes || true
+          az container delete --name $CONTAINER_NAME --resource-group $RESOURCE_GROUP --yes || true
           az container create \
-            --resource-group dd-tixcraft-ocr-web_group \
-            --name tixcraft-ocr-web-container \
-            --image ${{ secrets.DOCKERHUB_USERNAME }}/tixcraft-ocr-web:${{ github.sha }} \
-            --dns-name-label tixcraft-ocr-web-ci-cd \
+            --resource-group react-rg \
+            --name react-container \
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --dns-name-label ${{ env.IMAGE_NAME }}-ci-cd-demo \
             --ports 80 \
-            --location eastasia \
+            --location $LOCATION \
             --restart-policy Always
