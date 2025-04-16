@@ -36,10 +36,10 @@ jobs:
 
       - name: Deploy to Azure Container Instances
         run: |
-          az container delete --name $CONTAINER_NAME --resource-group $RESOURCE_GROUP --yes || true
+          az container delete --name ${{ env.CONTAINER_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --yes || true
           az container create \
-            --resource-group $RESOURCE_GROUP \
-            --name $CONTAINER_NAME \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --name ${{ env.CONTAINER_NAME }} \
             --image ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --dns-name-label ${{ env.IMAGE_NAME }}-ci-cd-demo \
             --ports 80 \
