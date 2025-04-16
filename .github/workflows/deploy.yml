@@ -34,19 +34,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Ensure Microsoft.ContainerInstance is registered
-        run: |
-          az provider register --namespace Microsoft.ContainerInstance
-          echo "Waiting for registration to complete..."
-          for i in {1..10}; do
-            state=$(az provider show --namespace Microsoft.ContainerInstance --query "registrationState" -o tsv)
-            echo "Current state: $state"
-            if [ "$state" = "Registered" ]; then
-              break
-            fi
-            sleep 10
-          done
-
       - name: Deploy to Azure Container Instances
         run: |
           az container delete --name $CONTAINER_NAME --resource-group $RESOURCE_GROUP --yes || true
