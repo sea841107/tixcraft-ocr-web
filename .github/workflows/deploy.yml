@@ -36,7 +36,12 @@ jobs:
 
       - name: Deploy to Azure Container Instances
         run: |
-          az container delete --name ${{ env.CONTAINER_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --yes || true
+          if az container show --name ${{ env.CONTAINER_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} &>/dev/null; then
+            az container delete --name ${{ env.CONTAINER_NAME }} --resource-group ${{ env.RESOURCE_GROUP }} --yes
+          else
+            echo "No existing container to delete."
+          fi
+          
           az container create \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --name ${{ env.CONTAINER_NAME }} \
